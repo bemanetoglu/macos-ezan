@@ -81,7 +81,7 @@ Prayer times data is provided by the [EzanVakti API](https://github.com/furkante
 
 ### Option 2: Download Pre-built
 
-Download the latest release from the [Releases](https://github.com/burhanemanetoglu/macos-ezan/releases) page.
+Download the latest release from the [Releases](https://github.com/bemanetoglu/macos-ezan/releases) page.
 
 ## Usage
 
