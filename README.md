@@ -83,6 +83,21 @@ Prayer times data is provided by the [EzanVakti API](https://github.com/furkante
 
 Download the latest release from the [Releases](https://github.com/bemanetoglu/macos-ezan/releases) page.
 
+**Important: First-time setup on macOS:**
+
+Since this app is not notarized by Apple, you need to allow it manually:
+
+1. Download and extract `EzanVakti-v1.0.0.zip`
+2. Move `EzanVakti.app` to your `/Applications` folder
+3. Right-click (Control+click) on `EzanVakti.app` and select **Open**
+4. Click **Open** in the security dialog
+5. After the first manual open, the app will launch normally
+
+Alternatively, via Terminal:
+```bash
+xattr -cr /Applications/EzanVakti.app
+```
+
 ## Usage
 
 ### First Launch
