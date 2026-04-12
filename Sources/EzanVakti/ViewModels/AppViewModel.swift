@@ -3,11 +3,15 @@ import Combine
 import ServiceManagement
 
 enum WidgetStyle: String, CaseIterable, Identifiable {
-    case nameAndTime = "Vakit Adı ve Saati"
-    case countdown = "Vakte Kalan Süre"
-    case iconOnly = "Sadece İkon"
-    
+    case nameAndTime = "Name and Time"
+    case countdown = "Countdown"
+    case iconOnly = "Icon Only"
+
     var id: String { self.rawValue }
+
+    var displayName: String {
+        NSLocalizedString(rawValue, comment: "")
+    }
 }
 
 struct PrayerMoment {
@@ -104,13 +108,13 @@ class AppViewModel: ObservableObject {
         let u = ulkeler.first { $0.UlkeID == selectedUlkeID }?.UlkeAdi ?? ""
         let s = sehirler.first { $0.SehirID == selectedSehirID }?.SehirAdi ?? ""
         let i = ilceler.first { $0.IlceID == selectedIlceID }?.IlceAdi ?? ""
-        
+
         if !i.isEmpty && !s.isEmpty {
             return "\(i), \(s)"
         } else if !s.isEmpty {
             return "\(s), \(u)"
         }
-        return "Konum Seçilmedi"
+        return "Location Not Selected"
     }
     
     @MainActor
@@ -122,7 +126,7 @@ class AppViewModel: ObservableObject {
             ilceler = try await APIService.shared.getIlceler(sehirID: selectedSehirID)
             fetchTimes()
         } catch {
-            errorMessage = "Ülkeler yüklenemedi."
+            errorMessage = NSLocalizedString("Countries could not be loaded", comment: "")
         }
         isLoading = false
     }
@@ -164,7 +168,7 @@ class AppViewModel: ObservableObject {
                 scheduleNotifications()
                 updateWidgetText()
             } catch {
-                errorMessage = "Vakitler alınamadı."
+                errorMessage = NSLocalizedString("Times could not be loaded", comment: "")
             }
             isLoading = false
         }
@@ -179,20 +183,20 @@ class AppViewModel: ObservableObject {
                 // Populate arrays before setting selections
                 let sehirlerResponse = try await APIService.shared.getSehirler(ulkeID: result.ulkeID)
                 let ilcelerResponse = try await APIService.shared.getIlceler(sehirID: result.sehirID)
-                
+
                 self.sehirler = sehirlerResponse
                 self.ilceler = ilcelerResponse
-                
+
                 self.selectedUlkeID = result.ulkeID
                 self.selectedSehirID = result.sehirID
                 self.selectedIlceID = result.ilceID
-                
+
                 fetchTimes()
             } else {
-                errorMessage = "Bulunduğunuz konum API'de haritalanamadı."
+                errorMessage = NSLocalizedString("Location could not be found", comment: "")
             }
         } catch {
-            errorMessage = "Konum bulma hatası."
+            errorMessage = NSLocalizedString("Location finding error", comment: "")
         }
         isAutoUpdatingLocation = false
         isLoading = false
@@ -277,17 +281,17 @@ class AppViewModel: ObservableObject {
         case .nameAndTime:
             let formatter = DateFormatter()
             formatter.dateFormat = "HH:mm"
-            menuBarText = "\(next.type.rawValue) \(formatter.string(from: next.date))"
-            
+            menuBarText = "\(next.type.displayName) \(formatter.string(from: next.date))"
+
         case .countdown:
             let diff = Calendar.current.dateComponents([.hour, .minute, .second], from: now, to: next.date)
             let h = String(format: "%02d", max(diff.hour ?? 0, 0))
             let m = String(format: "%02d", max(diff.minute ?? 0, 0))
             let s = String(format: "%02d", max(diff.second ?? 0, 0))
             if h == "00" {
-                menuBarText = "\(next.type.rawValue) \(m):\(s)"
+                menuBarText = "\(next.type.displayName) \(m):\(s)"
             } else {
-                menuBarText = "\(next.type.rawValue) \(h):\(m):\(s)"
+                menuBarText = "\(next.type.displayName) \(h):\(m):\(s)"
             }
         case .iconOnly:
             menuBarText = ""

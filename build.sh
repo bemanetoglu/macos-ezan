@@ -24,6 +24,16 @@ if [ -f "AppIcon.icns" ]; then
     cp AppIcon.icns "${RESOURCES_DIR}/"
 fi
 
+# Localization dosyalarını kopyala
+if [ -d "Resources/Localization" ]; then
+    for lproj in Resources/Localization/*.lproj; do
+        lproj_name=$(basename "$lproj")
+        mkdir -p "${RESOURCES_DIR}/${lproj_name}"
+        cp "${lproj}/"* "${RESOURCES_DIR}/${lproj_name}/" 2>/dev/null
+    done
+    echo "Localization dosyaları kopyalandı."
+fi
+
 
 # Info.plist oluştur
 cat <<EOF > "${CONTENTS_DIR}/Info.plist"
@@ -51,6 +61,11 @@ cat <<EOF > "${CONTENTS_DIR}/Info.plist"
     <string>AppIcon.icns</string>
     <key>CFBundleIconName</key>
     <string>AppIcon</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>tr</string>
+    </array>
 </dict>
 </plist>
 EOF

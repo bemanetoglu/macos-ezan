@@ -1,0 +1,52 @@
+/* 
+  Localizable.strings (English)
+  EzanVakti - English localization
+*/
+
+// App Title
+"Ezan Vakti" = "Prayer Times";
+
+// Onboarding
+"Welcome Title" = "Welcome!";
+"Welcome Description" = "Please select your location below or automatically detect it to calculate prayer times.";
+"Save and Start" = "Save and Start";
+
+// Location
+"Country" = "Country";
+"City" = "City";
+"District" = "District";
+"Location" = "Location";
+"Location Not Selected" = "No Location Selected";
+
+// Prayer Times
+"Imsak" = "Imsak";
+"Sunrise" = "Sunrise";
+"Dhuhr" = "Dhuhr";
+"Asr" = "Asr";
+"Maghrib" = "Maghrib";
+"Isha" = "Isha";
+
+// Settings
+"Launch at Startup" = "Launch at Login";
+"Enable Notifications" = "Enable Notifications";
+"Widget Style" = "Widget Style";
+"Exit" = "Exit";
+
+// Widget Styles
+"Name and Time" = "Name and Time";
+"Countdown" = "Countdown";
+"Icon Only" = "Icon Only";
+
+// Status Messages
+"Loading" = "Loading...";
+"Times could not be loaded" = "Prayer times could not be loaded";
+"Countries could not be loaded" = "Countries could not be loaded";
+"Location could not be found" = "Your location could not be mapped in the API.";
+"Location finding error" = "Location finding error.";
+
+// Notifications
+"Prayer Time Notification Title" = "Prayer Time";
+"Prayer Time Notification Body" = "%@ time has entered.";
+
+// Edit Location
+"Edit Location" = "Edit Location";

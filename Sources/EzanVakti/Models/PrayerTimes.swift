@@ -47,15 +47,19 @@ struct GregorianDate: Codable {
 }
 
 enum PrayerType: String, CaseIterable, Identifiable {
-    case imsak = "İmsak"
-    case sunrise = "Güneş"
-    case dhuhr = "Öğle"
-    case asr = "İkindi"
-    case maghrib = "Akşam"
-    case isha = "Yatsı"
-    
+    case imsak = "Imsak"
+    case sunrise = "Sunrise"
+    case dhuhr = "Dhuhr"
+    case asr = "Asr"
+    case maghrib = "Maghrib"
+    case isha = "Isha"
+
     var id: String { self.rawValue }
-    
+
+    var displayName: String {
+        NSLocalizedString(rawValue, comment: "")
+    }
+
     var apiKey: String {
         switch self {
         case .imsak: return "Imsak"

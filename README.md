@@ -27,6 +27,26 @@ The application displays the following daily prayer times:
 - **Akşam** - Sunset/Maghrib prayer
 - **Yatsı** - Night prayer
 
+## 🌍 Multi-Language Support
+
+The application supports **Turkish** and **English** languages. The app automatically uses your macOS system language:
+
+- **Türkçe** (varsayılan)
+- **English**
+
+To change the language:
+1. Open **System Settings** → **General** → **Language & Region**
+2. Add your preferred language or change system language
+3. Restart the app
+
+### Adding a New Language
+
+1. Create a new folder: `Resources/Localization/xx.lproj/` (where `xx` is the language code)
+2. Copy and translate `Localizable.strings` into that folder
+3. Add the language code to `CFBundleLocalizations` in `build.sh`
+
+---
+
 ## API
 
 Prayer times data is provided by the [EzanVakti API](https://github.com/furkantektas/EzanVaktiAPI) project, hosted at `https://ezanvakti.emushaf.net`. We gratefully acknowledge the Furkan Tektaş and the Emushaf team for maintaining this essential service.

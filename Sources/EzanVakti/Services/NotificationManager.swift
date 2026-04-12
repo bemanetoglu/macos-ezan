@@ -19,14 +19,14 @@ class NotificationManager: ObservableObject {
     
     func scheduleNotification(for prayer: PrayerType, at date: Date) {
         let content = UNMutableNotificationContent()
-        content.title = "Ezan Vakti"
-        content.body = "\(prayer.rawValue) vakti girdi."
+        content.title = NSLocalizedString("Prayer Time Notification Title", comment: "")
+        content.body = String(format: NSLocalizedString("Prayer Time Notification Body", comment: ""), prayer.displayName)
         content.sound = UNNotificationSound.default
-        
+
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         let request = UNNotificationRequest(identifier: prayer.id, content: content, trigger: trigger)
-        
+
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to schedule notification for \(prayer.rawValue): \(error.localizedDescription)")

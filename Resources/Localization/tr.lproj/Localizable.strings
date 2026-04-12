@@ -1,0 +1,52 @@
+/* 
+  Localizable.strings (Turkish)
+  EzanVakti - Türkçe yerelleştirme
+*/
+
+// App Title
+"Ezan Vakti" = "Ezan Vakti";
+
+// Onboarding
+"Welcome Title" = "Hoş Geldiniz!";
+"Welcome Description" = "Lütfen namaz vakitlerinin hesaplanacağı konumu aşağıdan seçin veya otomatik olarak bulun.";
+"Save and Start" = "Kaydet ve Başla";
+
+// Location
+"Country" = "Ülke";
+"City" = "Şehir";
+"District" = "İlçe";
+"Location" = "Konum";
+"Location Not Selected" = "Konum Seçilmedi";
+
+// Prayer Times
+"Imsak" = "İmsak";
+"Sunrise" = "Güneş";
+"Dhuhr" = "Öğle";
+"Asr" = "İkindi";
+"Maghrib" = "Akşam";
+"Isha" = "Yatsı";
+
+// Settings
+"Launch at Startup" = "Sistem Açılışında Başlat";
+"Enable Notifications" = "Bildirim Al (Vakit Girince)";
+"Widget Style" = "Widget Stili";
+"Exit" = "Çıkış";
+
+// Widget Styles
+"Name and Time" = "Vakit Adı ve Saati";
+"Countdown" = "Vakte Kalan Süre";
+"Icon Only" = "Sadece İkon";
+
+// Status Messages
+"Loading" = "Yükleniyor...";
+"Times could not be loaded" = "Vakitler yüklenemedi";
+"Countries could not be loaded" = "Ülkeler yüklenemedi";
+"Location could not be found" = "Bulunduğunuz konum API'de haritalanamadı.";
+"Location finding error" = "Konum bulma hatası.";
+
+// Notifications
+"Prayer Time Notification Title" = "Ezan Vakti";
+"Prayer Time Notification Body" = "%@ vakti girdi.";
+
+// Edit Location
+"Edit Location" = "Konumu Düzenle";

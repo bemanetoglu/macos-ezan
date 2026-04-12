@@ -62,32 +62,32 @@ struct MainView: View {
         }
         .padding(.bottom, 8)
     }
-    
+
     private var onboardingView: some View {
         VStack(spacing: 16) {
             Image(systemName: "globe.europe.africa.fill")
                 .font(.system(size: 40))
                 .foregroundColor(.blue)
                 .padding(.top, 16)
-            
-            Text("Hoş Geldiniz!")
+
+            Text("Welcome Title")
                 .font(.title3)
                 .bold()
-            
-            Text("Lütfen namaz vakitlerinin hesaplanacağı konumu aşağıdan seçin veya otomatik olarak bulun.")
+
+            Text("Welcome Description")
                 .font(.caption)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal)
-            
+
             locationForm
-            
+
             Button(action: {
                 withAnimation {
                     viewModel.isOnboardingCompleted = true
                 }
             }) {
-                Text("Kaydet ve Başla")
+                Text("Save and Start")
                     .bold()
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 4)
@@ -125,7 +125,7 @@ struct MainView: View {
     private var locationForm: some View {
         VStack(spacing: 8) {
             HStack {
-                Picker("Ülke", selection: $viewModel.selectedUlkeID) {
+                Picker("Country", selection: $viewModel.selectedUlkeID) {
                     ForEach(viewModel.ulkeler) { ulke in
                         Text(ulke.UlkeAdi).tag(ulke.UlkeID)
                     }
@@ -134,8 +134,8 @@ struct MainView: View {
                 .onChange(of: viewModel.selectedUlkeID) { _ in
                     Task { await viewModel.handleUlkeChange() }
                 }
-                
-                Picker("Şehir", selection: $viewModel.selectedSehirID) {
+
+                Picker("City", selection: $viewModel.selectedSehirID) {
                     ForEach(viewModel.sehirler) { sehir in
                         Text(sehir.SehirAdi).tag(sehir.SehirID)
                     }
@@ -146,9 +146,9 @@ struct MainView: View {
                 }
             }
             .padding(.horizontal)
-            
+
             HStack {
-                Picker("İlçe", selection: $viewModel.selectedIlceID) {
+                Picker("District", selection: $viewModel.selectedIlceID) {
                     ForEach(viewModel.ilceler) { ilce in
                         Text(ilce.IlceAdi).tag(ilce.IlceID)
                     }
@@ -157,7 +157,7 @@ struct MainView: View {
                 .onChange(of: viewModel.selectedIlceID) { _ in
                     viewModel.fetchTimes()
                 }
-                
+
                 Button(action: {
                     locationManager.requestLocation()
                 }) {
@@ -167,7 +167,7 @@ struct MainView: View {
                         } else {
                             Image(systemName: "location.fill")
                         }
-                        Text("Konum")
+                        Text("Location")
                     }
                 }
                 .frame(width: 90)
@@ -188,14 +188,14 @@ struct MainView: View {
                     .font(.caption)
                     .padding()
             } else if let timings = viewModel.timings {
-                PrayerRow(title: "İmsak", time: timings.imsak, isNext: viewModel.nextPrayerType == .imsak)
-                PrayerRow(title: "Güneş", time: timings.sunrise, isNext: viewModel.nextPrayerType == .sunrise)
-                PrayerRow(title: "Öğle", time: timings.dhuhr, isNext: viewModel.nextPrayerType == .dhuhr)
-                PrayerRow(title: "İkindi", time: timings.asr, isNext: viewModel.nextPrayerType == .asr)
-                PrayerRow(title: "Akşam", time: timings.maghrib, isNext: viewModel.nextPrayerType == .maghrib)
-                PrayerRow(title: "Yatsı", time: timings.isha, isNext: viewModel.nextPrayerType == .isha)
+                PrayerRow(title: PrayerType.imsak.displayName, time: timings.imsak, isNext: viewModel.nextPrayerType == .imsak)
+                PrayerRow(title: PrayerType.sunrise.displayName, time: timings.sunrise, isNext: viewModel.nextPrayerType == .sunrise)
+                PrayerRow(title: PrayerType.dhuhr.displayName, time: timings.dhuhr, isNext: viewModel.nextPrayerType == .dhuhr)
+                PrayerRow(title: PrayerType.asr.displayName, time: timings.asr, isNext: viewModel.nextPrayerType == .asr)
+                PrayerRow(title: PrayerType.maghrib.displayName, time: timings.maghrib, isNext: viewModel.nextPrayerType == .maghrib)
+                PrayerRow(title: PrayerType.isha.displayName, time: timings.isha, isNext: viewModel.nextPrayerType == .isha)
             } else {
-                Text("Vakitler yüklenemedi")
+                Text("Times could not be loaded")
                     .foregroundColor(.secondary)
                     .padding()
             }
@@ -205,21 +205,21 @@ struct MainView: View {
     
     private var settingsView: some View {
         VStack(spacing: 8) {
-            Toggle("Sistem Açılışında Başlat", isOn: $viewModel.launchAtStartup)
+            Toggle("Launch at Startup", isOn: $viewModel.launchAtStartup)
                 .padding(.horizontal)
-                
-            Toggle("Bildirim Al (Vakit Girince)", isOn: $viewModel.enableNotifications)
+
+            Toggle("Enable Notifications", isOn: $viewModel.enableNotifications)
                 .padding(.horizontal)
-            
-            Picker("Widget Stili", selection: $viewModel.widgetStyle) {
+
+            Picker("Widget Style", selection: $viewModel.widgetStyle) {
                 ForEach(WidgetStyle.allCases) { style in
-                    Text(style.rawValue).tag(style)
+                    Text(style.displayName).tag(style)
                 }
             }
             .pickerStyle(MenuPickerStyle())
             .padding(.horizontal)
-            
-            Button("Çıkış") {
+
+            Button("Exit") {
                 NSApplication.shared.terminate(nil)
             }
             .padding(.top, 4)
