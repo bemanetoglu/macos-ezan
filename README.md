@@ -200,11 +200,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Screenshots
 
-### Menu Bar Display
-The app shows the next prayer name and countdown in your macOS menu bar.
+### App Interface
+![App Interface](app.png)
 
-### Settings Panel
-Select your location and customize display preferences in the popover interface.
+### Menu Bar Widget
+![Menu Bar Widget](widget.png)
 
 ---
 
