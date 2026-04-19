@@ -49,11 +49,17 @@ class AppViewModel: ObservableObject {
     }
     
     @Published var enableNotifications: Bool {
-        didSet { 
+        didSet {
             UserDefaults.standard.set(enableNotifications, forKey: "enableNotifications")
             if enableNotifications {
-                NotificationManager.shared.requestAuthorization()
-                scheduleNotifications()
+                Task {
+                    let granted = await NotificationManager.shared.requestAuthorization()
+                    if granted {
+                        await MainActor.run {
+                            scheduleNotifications()
+                        }
+                    }
+                }
             } else {
                 NotificationManager.shared.removeAllScheduledNotifications()
             }
@@ -95,6 +101,11 @@ class AppViewModel: ObservableObject {
         }
         
         self.enableNotifications = UserDefaults.standard.bool(forKey: "enableNotifications")
+
+        // Check notification authorization status on launch
+        if self.enableNotifications {
+            NotificationManager.shared.checkAuthorizationStatus()
+        }
         
         self.isOnboardingCompleted = UserDefaults.standard.bool(forKey: "isOnboardingCompleted")
         self.launchAtStartup = SMAppService.mainApp.status == .enabled
@@ -237,14 +248,20 @@ class AppViewModel: ObservableObject {
     }
     
     private func scheduleNotifications() {
-        guard enableNotifications else { return }
+        guard enableNotifications else {
+            print("Notifications are disabled, skipping schedule")
+            return
+        }
         NotificationManager.shared.removeAllScheduledNotifications()
         let now = Date()
+        var scheduledCount = 0
         for moment in prayerDates {
             if moment.date > now {
                 NotificationManager.shared.scheduleNotification(for: moment.type, at: moment.date)
+                scheduledCount += 1
             }
         }
+        print("Scheduled \(scheduledCount) notifications")
     }
     
     private func updateWidgetText() {

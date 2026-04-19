@@ -3,20 +3,22 @@ import UserNotifications
 
 class NotificationManager: ObservableObject {
     static let shared = NotificationManager()
-    
+
     @Published var isAuthorized = false
-    
-    func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+
+    func requestAuthorization() async -> Bool {
+        do {
+            let granted = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
             DispatchQueue.main.async {
                 self.isAuthorized = granted
             }
-            if let error = error {
-                print("Notification permission error: \(error.localizedDescription)")
-            }
+            return granted
+        } catch {
+            print("Notification permission error: \(error.localizedDescription)")
+            return false
         }
     }
-    
+
     func scheduleNotification(for prayer: PrayerType, at date: Date) {
         let content = UNMutableNotificationContent()
         content.title = NSLocalizedString("Prayer Time Notification Title", comment: "")
@@ -30,11 +32,21 @@ class NotificationManager: ObservableObject {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to schedule notification for \(prayer.rawValue): \(error.localizedDescription)")
+            } else {
+                print("Scheduled notification for \(prayer.displayName) at \(date)")
             }
         }
     }
-    
+
     func removeAllScheduledNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+
+    func checkAuthorizationStatus() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                self.isAuthorized = settings.authorizationStatus == .authorized
+            }
+        }
     }
 }
